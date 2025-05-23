@@ -1,0 +1,33 @@
+.content {
+  float: left;
+}
+
+.left, .right {
+  width: 25%;
+}
+
+.center {
+  width: 50%;
+}
+
+
+.main {
+    width: 100%;
+}
+/* Clear floats after the columns */
+.main:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media screen and (max-width: 600px) {
+  .content {
+    width: 100%;
+  }
+}
+
+button {
+    background-color: white;
+    font-size: 18px;
+}
