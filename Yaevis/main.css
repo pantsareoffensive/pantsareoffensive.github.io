@@ -1,114 +1,96 @@
+
+* {
+    box-sizing: border-box;
+}
+:root {
+    --header-height: 30px;
+    --footer-height: 30px;
+}
+
+body { 
+  overflow-x: hidden;
+}
+
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-
+  overflow-y: hidden;
   background-color: #fff2d3;
-
 }
 
 .wrapper {
-  display: grid;
-  /* Header and footer span the entire width, sidebars and content are fixed, with empty space on sides */
-  grid-template-areas:
-    "header header header"
-    "sidebar_1 content sidebar_2"
-    "footer footer footer";
-  /* Only expand middle section vertically (content and sidebars) */
-  grid-template-rows: 0fr 1fr 0fr;
-  /* 100% width, but static widths for content and sidebars */
-  grid-template-columns: 300px 1fr 300px;
-  /* Force grid to be at least the height of the screen */
-  min-height: 100vh;
-  min-width: 100vw;
+  display: flex;
+  overflow: hidden;
+  height: 100vh;
+
+  margin-top: -75px;
+  padding-top: 75px;
+
+  margin-bottom: -75px;
+  padding-bottom: 75px;
+
+  position: relative;
+  width: 100%;
+  backface-visibility: hidden;
+  will-change: overflow;
+
+
 }
 
-.header, .footer {
+
+
+.header,
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+  height: 75px;
+
   border: 4px ridge #aa7338;
   background-color: #fff2d3;
+  padding: 5px;
 
 }
-.header {
-  grid-area: header;
 
-  /* Stick header to top of grid */
-  position: sticky;
-  top: 0;
-  /* Ensure header appears on top of content/sidebars */
-  z-index: 1;
 
-  /* General appearance */
-  text-align: center;
-  font-size: 1rem;
-  line-height: 1.5;
-  padding: 1rem;
-} 
 
-.footer {
-  grid-area: footer;
+/* ----------------- */
+/* ----------------- */
+/* ----------------- */
 
-  /* Stick footer to bottom of grid */
-  position: sticky;
-  bottom: 0;
 
-  /* General appearance */
-  text-align: center;
-  font-size: .8rem;
-  line-height: 1.5;
+.stats,
+.content,
+.log {
+  overflow: auto;
+  height: auto;
   padding: .5rem;
-}
-/* Save footer height to properly set `bottom` and `min-height` for sticky content */
-:root {
-  --footer-height: calc(.8rem * 1.5 + .5rem * 2);
-}
-/* ----------------- */
-/* ----------------- */
-/* ----------------- */
-
-.sidebar-1 {
-  grid-area: sidebar_1;
-}
-.sidebar-2 {
-  grid-area: sidebar_2;
-}
-.sidebar-1,
-.sidebar-2 {
-  display: flex;
-  flex-direction: column;
-  position: sticky;
-  top: 0;
-
+  
   /* Styling to match reference */
-  border-left: 4px ridge #aa7338;
-  border-right: 4px ridge #aa7338;
 
 }
 
 .content {
-  grid-area: content;
-  padding:8px;
-  /* General appearance */
+  flex:1;
 }
+
+.stats,
+.log {
+  width: 300px;
+    border-left: 4px ridge #aa7338;
+  border-right: 4px ridge #aa7338;
+}
+
+
+
+
 
 button {
     background-color: #aa7338;
     color: #fff2d3;
     font-size: 18px;
-}
-
-.sticky-spacer {
-  flex-grow: 1;
-}
-.sticky-content {
-  position: sticky;
-  bottom: var(--footer-height);
-  min-height: calc(100vh - var(--footer-height));
-  box-sizing: border-box;
-
-  --padding: 10px;
-  padding:
-    calc(var(--header-height) + var(--padding))
-    var(--padding)
-    var(--padding);
-  margin-top: calc(0px - var(--header-height));
+    padding: 8px;
 }
