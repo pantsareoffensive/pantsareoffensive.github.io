@@ -5,8 +5,16 @@ let total_time = 0;
 function Stat(name, id, max) {
     this.name = name;
     this.id = id;
+    this.active = false;
     this.max = max;
     this.value = 0;
+    this.add = function(num) {
+        this.value += num;
+    
+        if (this.value > stat.max) {
+            stat.value = stat.max;
+        }
+    }
     this.toString = function() {
         return this.name + ": " + this.value.toFixed(2) +" / "+this.max.toFixed(2);
     }
@@ -20,27 +28,37 @@ function updateText(element, text) {
 }
 
 function addCount(stat, value) {
-    stat.value += value;
-    if (stat.value > stat.max) {
-        stat.value = stat.max;
-    }
+    stat.add(value);
     updateText(stat.id, stat.toString());
 
 }
 
 
-setInterval(function gameLoop() {
-    const current_time = Date.now();
-    if (last_time === null) {
-        last_time = current_time;
-    }
-    const delta_time = current_time - last_time;
-    total_time += delta_time;
-    last_time = current_time; 
-    GameUpdate(delta_time, total_time);
+fetch('game.json')
+    .then(response => response.json()) // Parse JSON
+    .then(data => gData(data)) // Work with JSON data
+    .catch(error => console.error('Error fetching JSON:', error));
 
-}, 1000);
+
+function GameLoadData(gData) {
+    
+    StartLoop();
+}
+
+function StartLoop() {
+    setInterval(function gameLoop() {
+        const current_time = Date.now();
+        if (last_time === null) {
+            last_time = current_time;
+        }
+        const delta_time = current_time - last_time;
+        total_time += delta_time;
+        last_time = current_time;
+        GameUpdate(delta_time, total_time);
+
+    }, 1000);
+}
+
 
 function GameUpdate(delta_time, total_time) { 
-    addCount(pollen, 0.01 );
 }

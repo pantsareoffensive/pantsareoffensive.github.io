@@ -1,0 +1,14 @@
+{
+    "resources": [
+      {
+        "name": "Pollen",
+        "max": 10,
+        "value": 0
+      },
+      {
+        "name": "Honey",
+        "max": 10,
+        "value": 0
+      }
+    ]
+  }
