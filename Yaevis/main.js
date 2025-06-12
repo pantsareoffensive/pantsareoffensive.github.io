@@ -2,48 +2,48 @@
 let last_time = null;
 let total_time = 0;
 
-function Stat(name, id, max) {
+let gameResources = []; 
+function Stat(name, value, max) {
     this.name = name;
-    this.id = id;
     this.active = false;
     this.max = max;
-    this.value = 0;
-    this.add = function(num) {
-        this.value += num;
-    
-        if (this.value > stat.max) {
-            stat.value = stat.max;
-        }
-    }
+    this.value = value;
     this.toString = function() {
         return this.name + ": " + this.value.toFixed(2) +" / "+this.max.toFixed(2);
     }
 };
 
-let pollen = new Stat("Pollen","#pollenCnt", 10);
-let honey =  new Stat("Honey","#honeyCnt", 10);
-
-function updateText(element, text) {
-    document.getElementById(element).innerHTML = text;
+function updateCntText(element) {
+    document.getElementById("#" + element.name + "cnt").innerHTML = element.toString();
 }
 
-function addCount(stat, value) {
-    stat.add(value);
-    updateText(stat.id, stat.toString());
-
+function addCount(data, value) {
+    data.value += value;
+    if (data.value > data.max) {
+        data.value = data.max;
+    }
+    updateCntText(data);
 }
 
 
 fetch('game.json')
     .then(response => response.json()) // Parse JSON
-    .then(data => gData(data)) // Work with JSON data
+    .then(data => GameLoadData(data)) // Work with JSON data
     .catch(error => console.error('Error fetching JSON:', error));
+
+function buildResources(resource) {
+    document.getElementById('#resources').innerHTML += '<div class="resource"><span id="#'+ resource.name +'cnt"></span></div>' ;
+    var data = new Stat(resource.name, resource.value, resource.max);
+    gameResources.push(data);
+    addCount(data, 0);
+}    
 
 
 function GameLoadData(gData) {
-    
+    gData.resources.forEach((element) => buildResources(element));
     StartLoop();
 }
+
 
 function StartLoop() {
     setInterval(function gameLoop() {
