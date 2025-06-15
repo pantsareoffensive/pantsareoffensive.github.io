@@ -3,12 +3,22 @@
       {
         "name": "Pollen",
         "max": 10,
-        "value": 0
+        "value": 0,
+        "gatherable": true
+        
       },
       {
         "name": "Honey",
         "max": 10,
-        "value": 0
+        "value": 0,
+        "gatherable": true
+        
+      },
+      {
+        "name": "Wax",
+        "max": 10,
+        "value": 0,
+        "gatherable": false
       }
     ]
   }

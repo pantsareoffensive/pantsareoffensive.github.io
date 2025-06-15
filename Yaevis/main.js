@@ -1,17 +1,19 @@
 
+import { global, save, gameResources } from './v.js';
+
 let last_time = null;
 let total_time = 0;
+let gameLoaded = false;
 
-let gameResources = []; 
-function Stat(name, value, max) {
+function Stat(name, value, max, gatherable ) {
     this.name = name;
-    this.active = false;
+    this.gatherable = gatherable || false;
     this.max = max;
     this.value = value;
     this.toString = function() {
         return this.name + ": " + this.value.toFixed(2) +" / "+this.max.toFixed(2);
     }
-};
+}
 
 function updateCntText(element) {
     document.getElementById("#" + element.name + "cnt").innerHTML = element.toString();
@@ -24,7 +26,10 @@ function addCount(data, value) {
     }
     updateCntText(data);
 }
-
+function ClickedButton(data) { 
+    addCount(data, 1);
+    console.log('Gathered' + data.name + ': ' + data.value);   
+}
 
 fetch('game.json')
     .then(response => response.json()) // Parse JSON
@@ -32,12 +37,32 @@ fetch('game.json')
     .catch(error => console.error('Error fetching JSON:', error));
 
 function buildResources(resource) {
-    document.getElementById('#resources').innerHTML += '<div class="resource"><span id="#'+ resource.name +'cnt"></span></div>' ;
-    var data = new Stat(resource.name, resource.value, resource.max);
+   var data = new Stat(resource.name, resource.value, resource.max, resource.gatherable);
+
+    document.getElementById('#resources').innerHTML += '<div class="resource"><span id="#'+ data.name +'cnt"></span></div>' ;
+
+    console.log('Resource created: ' + data.name + ' with value: ' + data.value + ' and max: ' + data.max);
     gameResources.push(data);
-    addCount(data, 0);
+    updateCntText(data);
+
+    if (data.gatherable) {
+        let gatherButton = '<button id="#gather' + data.name + '">Gather ' + data.name + '</button>';
+
+        document.getElementById('#content').appendChild(document.createElement('span')).innerHTML = gatherButton;
+
+        document.getElementById('#gather' + data.name).addEventListener('click', function() {
+            addCount(data, 1);
+            console.log('Gathered ' + data.name + ': ' + data.value);
+        });
+    }
+
 }    
 
+
+
+function getObjectByName(array, name) {
+    return array.find(obj => obj.name === name);
+}
 
 function GameLoadData(gData) {
     gData.resources.forEach((element) => buildResources(element));
@@ -61,4 +86,16 @@ function StartLoop() {
 
 
 function GameUpdate(delta_time, total_time) { 
+
+
+    // Update game logic here
+    gameResources.forEach(resource => {
+        
+    });
+
+    // Update UI elements
+    gameResources.forEach(updateCntText);
+
 }
+
+
